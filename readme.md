@@ -18,4 +18,4 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 ## To do
 
 * Ubuntu 20.04
-* Non-DHCP images
+* CentOS
