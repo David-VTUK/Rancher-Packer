@@ -9,3 +9,6 @@ crash.log
 
 # Config file
 variables.json
+
+# Downloaded iso's
+*.iso
