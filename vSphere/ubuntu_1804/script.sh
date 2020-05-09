@@ -2,4 +2,4 @@
 echo -n > /etc/machine-id
 
 # Reset any existing cloud-init state
-rm -rf /var/lib/cloud/instances
+cloud-init clean --logs
