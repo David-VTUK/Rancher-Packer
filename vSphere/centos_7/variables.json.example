@@ -7,6 +7,6 @@
     "host":"",
     "cluster": "",
     "network": "",
-    "ssh_username": "packerbuilt",
+    "ssh_username": "root",
     "ssh_password": "PackerBuilt!"
 }
