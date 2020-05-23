@@ -10,3 +10,7 @@ echo "network: {config: disabled}" > /etc/cloud/cloud.cfg.d/99-disable-network-c
 # Disable IPV6
 echo "net.ipv6.conf.all.disable_ipv6=1" > /etc/sysctl.conf
 echo "net.ipv6.conf.default.disable_ipv6=1" > /etc/sysctl.conf
+
+# Disable Swap
+swapoff -a 
+sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
