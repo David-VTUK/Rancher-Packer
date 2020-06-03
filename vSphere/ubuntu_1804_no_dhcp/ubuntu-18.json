@@ -10,6 +10,7 @@
   
         "vm_name": "template_ubuntu18_nodhcp",
         "datastore": "{{user `datastore`}}",
+        "vm_version": "15",
         "folder": "{{user `folder`}}",
         "host":     "{{user `host`}}",
         "convert_to_template": "true",
