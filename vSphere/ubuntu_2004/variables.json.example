@@ -1,0 +1,12 @@
+{
+    "vcenter_server":"",
+    "username":"administrator@vsphere.local",
+    "password":"",
+    "datastore":"",
+    "folder": "",
+    "host":"",
+    "cluster": "",
+    "network": "",
+    "ssh_username": "packerbuilt",
+    "ssh_password": "PackerBuilt!"
+}
