@@ -11,15 +11,16 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 
 ## Current Templates
 
-## vSphere
+### vSphere
 
 [Ubuntu 18.04](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_1804) - Includes logic to address cloud-init depedency and resolves DHCP issues (cloned VM's receiving the same DHCP address.)
 
 [Ubuntu 18.04 - No DHCP](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_1804_no_dhcp) - Forces not to accept DHCP. 
 
+[Ubuntu 20.04](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004)
+
 [CentOS 7](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/centos_7)
 
 ## To do
 
-* Ubuntu 20.04
-* CentOS
+* CentOS 8
