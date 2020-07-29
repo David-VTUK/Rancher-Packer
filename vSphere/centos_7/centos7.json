@@ -1,55 +1,53 @@
 {
-    "builders": [
-      {
-        "type": "vsphere-iso",
-  
-        "vcenter_server":      "{{user `vcenter_server`}}",
-        "username":            "{{user `username`}}",
-        "password":            "{{user `password`}}",
-        "insecure_connection": "true",
-  
-        "vm_name": "template_centos7",
-        "datastore": "{{user `datastore`}}",
-        "folder": "{{user `folder`}}",
-        "host":     "{{user `host`}}",
-        "convert_to_template": "true",
-        "cluster": "{{user `cluster`}}",
-        "network": "{{user `network`}}",
-        "boot_order": "disk,cdrom",
-  
-        "guest_os_type": "centos7_64Guest",
-  
-        "ssh_username": "{{user `ssh_username`}}",
-        "ssh_password": "{{user `ssh_password`}}",
-  
-        "CPUs":             2,
-        "RAM":              2048,
-        "RAM_reserve_all": true,
-  
-        "disk_controller_type":  "pvscsi",
-        "disk_size":        32768,
-        "disk_thin_provisioned": true,
-  
-        "network_card": "vmxnet3",
+  "builders": [
+    {
+      "CPUs": 2,
+      "RAM": 2048,
+      "RAM_reserve_all": true,
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_order": "disk,cdrom",
+      "cluster": "{{user `cluster`}}",
+      "convert_to_template": "true",
+      "datastore": "{{user `datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "folder": "{{user `folder`}}",
+      "guest_os_type": "centos7_64Guest",
+      "host": "{{user `host`}}",
+      "http_directory": "./http",
+      "insecure_connection": "true",
+      "iso_checksum": "SHA256:101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
+      "iso_urls": "http://mirror.bytemark.co.uk/centos/7.8.2003/isos/x86_64/CentOS-7-x86_64-NetInstall-2003.iso",
+      "network_adapters": [
+        {
+          "network": "{{user `network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "password": "{{user `password`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "storage": [
+        {
+          "disk_size": 8192,
+          "disk_thin_provisioned": true
+        }
+      ],
+      "type": "vsphere-iso",
+      "username": "{{user `username`}}",
+      "vcenter_server": "{{user `vcenter_server`}}",
+      "vm_name": "template_centos7"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "script.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
 
-        "http_directory": "./http",
-  
-        "iso_urls": "http://mirror.ox.ac.uk/sites/mirror.centos.org/7.8.2003/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso",
-        "iso_checksum": "087a5743dc6fd6706d9b961b8147423ddc029451b938364c760d75440eb7be14",
-        "iso_checksum_type": "SHA256",
-
-        "boot_command": [
-          "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
-        ]
-      }
-    ],
-    "provisioners": [
-      {
-        "type": "shell",
-        "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
-        "scripts" : [
-          "script.sh"
-        ]
-      }
-    ]
-  }

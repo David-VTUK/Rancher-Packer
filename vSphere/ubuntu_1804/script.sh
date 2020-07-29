@@ -19,9 +19,3 @@ echo '/.swap    swap    swap    default    0   0' >> /etc/fstab
 #
 cloud-init clean -s -l
 
-## Final clean up
-## Zero out the free space to save space in the final image
-##
-#dd if=/dev/zero of=/EMPTY bs=1M  || echo "dd exit code $? is suppressed"
-#rm -f /EMPTY
-#sync
