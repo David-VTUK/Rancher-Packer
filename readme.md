@@ -21,6 +21,10 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 
 [CentOS 7](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/centos_7)
 
+[RHEL7](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/rhel_7)
+
+[RHEL8](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/rhel_8)
+
 ## To do
 
 * CentOS 8
