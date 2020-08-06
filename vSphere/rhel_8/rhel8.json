@@ -1,0 +1,53 @@
+{
+  "builders": [
+    {
+      "CPUs": 2,
+      "RAM": 3192,
+      "RAM_reserve_all": true,
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_order": "disk,cdrom",
+      "cluster": "{{user `cluster`}}",
+      "convert_to_template": "true",
+      "datastore": "{{user `datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "folder": "{{user `folder`}}",
+      "guest_os_type": "centos7_64Guest",
+      "host": "{{user `host`}}",
+      "http_directory": "./http",
+      "insecure_connection": "true",
+      "iso_checksum": "SHA256:7fdfed9c7cced4e526a362e64ed06bcdc6ce0394a98625a40e7d05db29bf7b86",
+      "iso_urls": "http://<<your_repo_server>>/iso/rhel-8.2-x86_64-dvd.iso",
+      "network_adapters": [
+        {
+          "network": "{{user `network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "password": "{{user `password`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "storage": [
+        {
+          "disk_size": 20480,
+          "disk_thin_provisioned": true
+        }
+      ],
+      "type": "vsphere-iso",
+      "username": "{{user `username`}}",
+      "vcenter_server": "{{user `vcenter_server`}}",
+      "vm_name": "{{user `vm_image_name`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "script.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
+
