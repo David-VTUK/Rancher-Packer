@@ -17,3 +17,7 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id
 # Reset any existing cloud-init state
 #
 cloud-init clean -s -l
+
+# Prevent cloud-init from setting IP
+#
+bash -c "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
