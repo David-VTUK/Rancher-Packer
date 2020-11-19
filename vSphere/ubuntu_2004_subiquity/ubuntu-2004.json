@@ -25,7 +25,7 @@
 
       "storage": [
         {
-          "disk_size": 8192,
+          "disk_size": 32768,
           "disk_thin_provisioned": true
         }
       ],
