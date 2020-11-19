@@ -19,6 +19,8 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 
 [Ubuntu 20.04](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004)
 
+[Ubuntu 20.04 - Using the new Subiquity Installer] (https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004_subiquity)
+
 [Ubuntu 20.04 - With cloud-init & OVF integration](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004_cloud_init_guestinfo)
 
 [Ubuntu 20.04 - No DHCP](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004_no_dhcp)

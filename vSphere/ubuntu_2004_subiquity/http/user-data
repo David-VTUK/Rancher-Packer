@@ -1,0 +1,21 @@
+#cloud-config
+autoinstall:
+  version: 1
+  early-commands:
+    - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+  locale: en_US
+  keyboard:
+      layout: en
+      variant: uk
+  identity:
+      hostname: ubuntu
+      username: packerbuilt
+      password: '$1$rKxy/hZT$vAZ801S0/UEAEmVKogUdU0' # Password in hashed format
+  ssh:
+      install-server: yes
+      allow-pw: yes
+  packages:
+    - open-vm-tools
+  late-commands:
+    - echo 'packerbuilt ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/packerbuilt
+    - chmod 440 /target/etc/sudoers.d/packerbuilt
