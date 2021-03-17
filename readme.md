@@ -31,6 +31,8 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 
 [RHEL8](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/rhel_8)
 
+[Opensuse_Leap_15.2](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/opensuse_leap_15.2)
+
 
 ## To do
 
