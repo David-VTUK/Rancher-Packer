@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE profile>
 <profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
-  <add-on>
-    <add_on_products config:type="list">
-      <listentry>
-        <media_url><![CDATA[dvd:///?devices=/dev/sr0]]></media_url>
-        <product>sle-module-basesystem-release</product>
-        <product_dir>/Module-Basesystem</product_dir>
-      </listentry>
-    </add_on_products>
-  </add-on>
   <bootloader>
     <global>
       <activate>true</activate>

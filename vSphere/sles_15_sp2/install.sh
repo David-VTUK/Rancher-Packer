@@ -16,6 +16,8 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id
 # Cleanup
 #
 zypper -n clean --all
+/usr/sbin/SUSEConnect --de-register
+zypper -n rr SLES15-SP2-15.2-0
 rm -f /etc/udev/rules.d/70-persistent-net.rules
 touch /etc/udev/rules.d/75-persistent-net-generator.rules
 truncate -s 0 /etc/{hostname,hosts,resolv.conf}
@@ -28,4 +30,3 @@ fi
 rm -rf /tmp/* /tmp/.* /var/tmp/* /var/tmp/.* &> /dev/null || true
 rm -rf /var/cache/*/* /var/crash/* /var/lib/systemd/coredump/*
 cloud-init clean -s -l
-

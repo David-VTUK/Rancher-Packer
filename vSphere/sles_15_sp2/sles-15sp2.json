@@ -10,6 +10,7 @@
         "netsetup=dhcp ",
         "lang=en_US ",
         "textmode=1 ",
+        "self_update=1 ",
         "autoyast=device://fd0/autoinst.xml",
         "<enter><wait>"
       ],
@@ -21,8 +22,8 @@
         "./autoinst.xml"
       ],
       "guest_os_type": "sles15_64Guest",
-      "iso_checksum": "64aea562b5f51381b57f0c295fdd96c49b64c5f0760f2b62752fca54f4d999fd",
-      "iso_urls": "./SLE-15-SP2-Full-x86_64-QU1-Media1.iso",
+      "iso_checksum": "6ac1d233aaeca29e7237ee462badeb8d2becc11dc508317cb27702a50f855541",
+      "iso_urls": "./SLE-15-SP2-Online-x86_64-GM-Media1.iso",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_port": 22,
