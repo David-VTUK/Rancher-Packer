@@ -2,10 +2,10 @@
 
 Before you use Packer to build this image, you need to do the following:
 
-* Download the SLES 15 SP2 ISO (`SLE-15-SP2-Full-x86_64-QU1-Media1.iso`) and drop
+* Download the SLES 15 SP2 'online' GM ISO (`SLE-15-SP2-Online-x86_64-GM-Media1.iso`) and drop
   it into this folder;
-* Update `autoinstall.xml` and amend line 281 to specify your registration code
+* Update `autoinstall.xml` and amend line 272 to specify your registration code
   so that various add-ons can be included.
 
-As with the other images, you may also want to change the default build user (`packerbuilt`) /
+As with the other openSUSE image, you may also want to change the default build user (`packerbuilt`) /
 password.
