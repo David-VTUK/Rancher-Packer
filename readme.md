@@ -1,3 +1,5 @@
+[![Build](https://github.com/David-VTUK/Rancher-Packer/actions/workflows/main.yml/badge.svg)](https://github.com/David-VTUK/Rancher-Packer/actions/workflows/main.yml)
+
 # Packer Templates for Rancher
 
 This repo contains Packer templates suitable to create RKE VM's for a number of IaaS providers. These can be used as-is or used as a basis for further customisation
