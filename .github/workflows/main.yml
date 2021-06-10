@@ -5,7 +5,7 @@ on: [pull_request, workflow_dispatch]
 jobs:
   Build_ubuntu_2004_subiquity:
     runs-on: self-hosted
-    name: packer
+    name: Build ubuntu_2004_subiquity
 
     steps:
       - name: Checkout Repository
