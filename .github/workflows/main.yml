@@ -15,8 +15,10 @@ jobs:
       - name: Fix Template
         uses: hashicorp/packer-github-actions@master
         with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity/
           command: fix
-          target: ./vSphere/ubuntu_2004_subiquity/ubuntu-2004.json
+          target: ubuntu-2004.json
+
 
       # Grab config file
       - name: Generate variables.json
@@ -26,9 +28,10 @@ jobs:
       - name: Validate Template
         uses: hashicorp/packer-github-actions@master
         with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity/
           command: validate
           arguments: -syntax-only
-          target: ./vSphere/ubuntu_2004_subiquity/ubuntu-2004.json
+          target: ubuntu-2004.json
 
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
@@ -46,9 +49,10 @@ jobs:
       - name: Build Template - Ubuntu 2004
         uses: hashicorp/packer-github-actions@master
         with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity/
           command: build
-          arguments: "-color=false -on-error=abort --var-file=./vSphere/ubuntu_2004_subiquity/variables.json -force"
-          target: ./vSphere/ubuntu_2004_subiquity/ubuntu-2004.json
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-2004.json
 
       # cleanup
       - name: Delete Configmap & Remove Cloud-Init Data
