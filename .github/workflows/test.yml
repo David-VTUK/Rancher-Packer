@@ -1,11 +1,11 @@
-name: tesst-opensuse-leap
+name: test-sles-15-SP2
 
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  Build_opensuse_leap_15:
+  Build_sles_15_SP2:
     runs-on: self-hosted
-    name: opensuse_leap_15
+    name: sles_15_SP2
 
     steps:
       - name: Checkout Repository
@@ -15,38 +15,29 @@ jobs:
       - name: Fix Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/opensuse_leap_15.2/
+          working_directory: ./vSphere/sles_15_sp2/
           command: fix
-          target: opensuse-leap-15.2-x86_64.json
+          target: sles-15sp2.json
 
 
       # Grab config file
       - name: Generate variables.json
-        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/opensuse_leap_15.2/variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/sles_15_sp2/variables.json
 
       # validate templates
       - name: Validate Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/opensuse_leap_15.2/
+          working_directory: ./vSphere/sles_15_sp2/
           command: validate
           arguments: -syntax-only
-          target: opensuse-leap-15.2-x86_64.json
+          target: sles-15sp2.json
 
       # Build Template
       - name: Build Template - Opensuse Leap 15.2
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/opensuse_leap_15.2/
+          working_directory: ./vSphere/sles_15_sp2/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
-          target: opensuse-leap-15.2-x86_64.json
-
-      # cleanup
-      - name: Delete Configmap & Remove Cloud-Init Data
-
-        uses: steebchen/kubectl@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: delete cm dir && kubectl delete -f .github/cloud-init.yaml
+          target: sles-15sp2.json
