@@ -33,7 +33,7 @@
       "password": "{{user `password`}}",
       "vcenter_server": "{{user `vcenter_server`}}",
       "folder": "{{user `folder`}}",
-      "vm_name": "{{ user `template_name`}}",
+      "vm_name": "opensuse_leap_15.2",
       "cluster": "{{user `cluster`}}",
       "convert_to_template": "true",
       "datastore": "{{user `datastore`}}",
