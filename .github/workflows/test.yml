@@ -27,6 +27,10 @@ jobs:
       - name: Replace ISO reference
         run : sed -i 's,"./SLE-15-SP2-Online-x86_64-GM-Media1.iso","https://minio.virtualthoughts.co.uk:9000/iso/SLE-15-SP2-Online-x86_64-GM-Media1.iso",g' ./vSphere/sles_15_sp2/sles-15sp2.json
 
+      # Replace Reg Code reference
+      - name: Replace Reg Code reference
+        run : sed -i "s/YOUR_REG_CODE_HERE/${{ secrets.SCC_CODE }}/g" ./vSphere/sles_15_sp2/autoinst.xml
+
       # validate templates
       - name: Validate Template
         uses: hashicorp/packer-github-actions@master
