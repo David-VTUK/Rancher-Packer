@@ -206,3 +206,79 @@ jobs:
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: sles-15sp2.json
+
+  Build_ubuntu_1804:
+    runs-on: self-hosted
+    name: ubuntu_1804
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804/
+          command: fix
+          target: ubuntu-18.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_1804/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-18.json
+
+      # Build Template
+      - name: Build Template - Ubuntu 18.04
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-18.json
+
+  Build_ubuntu_1804_no_dhcp:
+    runs-on: self-hosted
+    name: ubuntu_1804_no_dhcp
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804_no_dhcp/
+          command: fix
+          target: ubuntu-18.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_1804_no_dhcp/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804_no_dhcp/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-18.json
+
+      # Build Template
+      - name: Build Template - Ubuntu 18.04
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804_no_dhcp/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-18.json
