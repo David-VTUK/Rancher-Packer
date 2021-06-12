@@ -25,7 +25,7 @@ jobs:
 
       # Replace ISO reference
       - name: Replace ISO reference
-        run : sed -i 's,"./SLE-15-SP2-Online-x86_64-GM-Media1.iso","https://minio.virtualthoughts.co.uk:9000/iso/SLE-15-SP2-Online-x86_64-GM-Media1.iso"/g' ./vSphere/sles_15_sp2/sles-15sp2.json
+        run : sed -i 's,"./SLE-15-SP2-Online-x86_64-GM-Media1.iso","https://minio.virtualthoughts.co.uk:9000/iso/SLE-15-SP2-Online-x86_64-GM-Media1.iso",g' ./vSphere/sles_15_sp2/sles-15sp2.json
 
       # validate templates
       - name: Validate Template
