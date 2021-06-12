@@ -160,3 +160,49 @@ jobs:
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: opensuse-leap-15.2-x86_64.json
+
+  Build_sles_15_SP2:
+    runs-on: self-hosted
+    name: sles_15_SP2
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/sles_15_sp2/
+          command: fix
+          target: sles-15sp2.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/sles_15_sp2/variables.json
+
+      # Replace ISO reference
+      - name: Replace ISO reference
+        run : sed -i 's,"./SLE-15-SP2-Online-x86_64-GM-Media1.iso","https://minio.virtualthoughts.co.uk:9000/iso/SLE-15-SP2-Online-x86_64-GM-Media1.iso",g' ./vSphere/sles_15_sp2/sles-15sp2.json
+
+      # Replace Reg Code reference
+      - name: Replace Reg Code reference
+        run : sed -i "s/YOUR_REG_CODE_HERE/${{ secrets.SCC_CODE }}/g" ./vSphere/sles_15_sp2/autoinst.xml
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/sles_15_sp2/
+          command: validate
+          arguments: -syntax-only
+          target: sles-15sp2.json
+
+      # Build Template
+      - name: Build Template - Opensuse Leap 15.2
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/sles_15_sp2/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: sles-15sp2.json
