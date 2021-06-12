@@ -43,7 +43,7 @@ jobs:
 
       # Replace HTTP reference
       - name: Replace HTTP reference
-        run : sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/ubuntu-2004.json
+        run : sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
 
       # Build Template
       - name: Build Template - Centos 7
