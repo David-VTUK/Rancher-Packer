@@ -33,7 +33,7 @@ jobs:
           target: ubuntu-18.json
 
       # Build Template
-      - name: Build Template - Opensuse Leap 15.2
+      - name: Build Template - Ubuntu 18.04
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/ubuntu_1804/
