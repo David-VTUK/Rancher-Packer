@@ -6,7 +6,6 @@ jobs:
   Build_centos_7:
     runs-on: self-hosted
     name: Build centos_7
-    concurrency: packer
 
     steps:
       - name: Checkout Repository
@@ -66,7 +65,8 @@ jobs:
   Build_opensuse_leap_15:
     runs-on: self-hosted
     name: Build opensuse_leap_15
-    concurrency: packer
+    if: always()
+    needs: Build_centos_7
 
     steps:
       - name: Checkout Repository
@@ -106,7 +106,8 @@ jobs:
   Build_sles_15_SP2:
     runs-on: self-hosted
     name: Build sles_15_SP2
-    concurrency: packer
+    if: always()
+    needs: Build_opensuse_leap_15
 
     steps:
       - name: Checkout Repository
@@ -153,7 +154,8 @@ jobs:
   Build_ubuntu_1804:
     runs-on: self-hosted
     name: Build ubuntu_1804
-    concurrency: packer
+    if: always()
+    needs: Build_sles_15_SP2
 
     steps:
       - name: Checkout Repository
@@ -192,7 +194,8 @@ jobs:
   Build_ubuntu_1804_no_dhcp:
     runs-on: self-hosted
     name: Build ubuntu_1804_no_dhcp
-    concurrency: packer
+    if: always()
+    needs: Build_ubuntu_1804
 
     steps:
       - name: Checkout Repository
@@ -231,7 +234,8 @@ jobs:
   Build_ubuntu_2004:
     runs-on: self-hosted
     name: Build ubuntu_2004
-    concurrency: packer
+    if: always()
+    needs: Build_ubuntu_1804_no_dhcp
 
     steps:
       - name: Checkout Repository
@@ -270,7 +274,8 @@ jobs:
   Build_ubuntu_2004_cloud_init_guestinfo:
     runs-on: self-hosted
     name: Build ubuntu_2004_cloud_init_guestinfo
-    concurrency: packer
+    if: always()
+    needs: Build_ubuntu_2004
 
     steps:
       - name: Checkout Repository
@@ -309,7 +314,8 @@ jobs:
   Build_ubuntu_2004_no_dhcp:
     runs-on: self-hosted
     name: Build ubuntu_2004_no_dhcp
-    concurrency: packer
+    if: always()
+    needs: Build_ubuntu_2004_cloud_init_guestinfo
 
     steps:
       - name: Checkout Repository
@@ -348,7 +354,8 @@ jobs:
   Build_ubuntu_2004_subiquity:
     runs-on: self-hosted
     name: Build ubuntu_2004_subiquity
-    concurrency: packer
+    if: always()
+    needs: Build_ubuntu_2004_no_dhcp
 
     steps:
       - name: Checkout Repository
@@ -409,7 +416,8 @@ jobs:
   Build_ubuntu_2004_subiquity_longhorn:
     runs-on: self-hosted
     name: Build ubuntu_2004_subiquity_longhorn
-    concurrency: packer
+    if: always()
+    needs: Build_ubuntu_2004_subiquity
 
     steps:
       - name: Checkout Repository
