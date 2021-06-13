@@ -64,7 +64,7 @@ jobs:
 
   Build_opensuse_leap_15:
     runs-on: self-hosted
-    name: opensuse_leap_15
+    name: Build opensuse_leap_15
 
     steps:
       - name: Checkout Repository
@@ -93,7 +93,7 @@ jobs:
           target: opensuse-leap-15.2-x86_64.json
 
       # Build Template
-      - name: Build Template - Opensuse Leap 15.2
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/opensuse_leap_15.2/
@@ -103,7 +103,7 @@ jobs:
 
   Build_sles_15_SP2:
     runs-on: self-hosted
-    name: sles_15_SP2
+    name: Build sles_15_SP2
 
     steps:
       - name: Checkout Repository
@@ -139,7 +139,7 @@ jobs:
           target: sles-15sp2.json
 
       # Build Template
-      - name: Build Template - Opensuse Leap 15.2
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/sles_15_sp2/
@@ -149,7 +149,7 @@ jobs:
 
   Build_ubuntu_1804:
     runs-on: self-hosted
-    name: ubuntu_1804
+    name: Build ubuntu_1804
 
     steps:
       - name: Checkout Repository
@@ -177,7 +177,7 @@ jobs:
           target: ubuntu-18.json
 
       # Build Template
-      - name: Build Template - Ubuntu 18.04
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/ubuntu_1804/
@@ -187,7 +187,7 @@ jobs:
 
   Build_ubuntu_1804_no_dhcp:
     runs-on: self-hosted
-    name: ubuntu_1804_no_dhcp
+    name: Build ubuntu_1804_no_dhcp
 
     steps:
       - name: Checkout Repository
@@ -215,7 +215,7 @@ jobs:
           target: ubuntu-18.json
 
       # Build Template
-      - name: Build Template - Ubuntu 18.04
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/ubuntu_1804_no_dhcp/
@@ -225,7 +225,7 @@ jobs:
 
   Build_ubuntu_2004:
     runs-on: self-hosted
-    name: ubuntu_2004
+    name: Build ubuntu_2004
 
     steps:
       - name: Checkout Repository
@@ -253,7 +253,7 @@ jobs:
           target: ubuntu-2004.json
 
       # Build Template
-      - name: Build Template - Ubuntu 20.04
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/ubuntu_2004/
@@ -291,7 +291,7 @@ jobs:
           target: ubuntu-2004.json
 
       # Build Template
-      - name: Build Template - Ubuntu 20.04 - no DHCP
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
@@ -342,10 +342,70 @@ jobs:
         run : sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004_subiquity/ubuntu-2004.json
 
       # Build Template
-      - name: Build Template - Ubuntu 2004
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/ubuntu_2004_subiquity/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-2004.json
+
+      # cleanup
+      - name: Delete Configmap & Remove Cloud-Init Data
+
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: delete cm dir && kubectl delete -f .github/cloud-init.yaml
+
+  Build_ubuntu_2004_subiquity_longhorn:
+    runs-on: self-hosted
+    name: Build ubuntu_2004_subiquity_longhorn
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity_longhorn/
+          command: fix
+          target: ubuntu-2004.json
+
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004_subiquity_longhorn/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity_longhorn/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-2004.json
+
+      # Upload Configmap
+      - name: Upload Configmap & Publish Cloud-Init Data
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: create configmap dir --from-file=./vSphere/ubuntu_2004_subiquity_longhorn/http && kubectl apply -f .github/cloud-init.yaml
+
+      # Replace HTTP reference
+      - name: Replace HTTP reference
+        run : sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004_subiquity_longhorn/ubuntu-2004.json
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity_longhorn/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: ubuntu-2004.json
