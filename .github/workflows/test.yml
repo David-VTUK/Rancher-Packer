@@ -1,11 +1,11 @@
-name: test-ubuntu-2004
+name: test-ubuntu-2004-nodhcp
 
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  Build_ubuntu_2004:
+  Build_ubuntu_2004_nodhcp:
     runs-on: self-hosted
-    name: ubuntu_2004
+    name: ubuntu_2004_nodhcp
 
     steps:
       - name: Checkout Repository
@@ -15,28 +15,28 @@ jobs:
       - name: Fix Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004/
+          working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
           command: fix
           target: ubuntu-2004.json
 
       # Grab config file
       - name: Generate variables.json
-        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004/variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004_cloud_init_guestinfo/variables.json
 
       # validate templates
       - name: Validate Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004/
+          working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
           command: validate
           arguments: -syntax-only
           target: ubuntu-2004.json
 
       # Build Template
-      - name: Build Template - Ubuntu 20.04
+      - name: Build Template - Ubuntu 20.04 - no DHCP
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004/
+          working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: ubuntu-2004.json
