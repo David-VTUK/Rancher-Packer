@@ -263,7 +263,7 @@ jobs:
 
   Build_ubuntu_2004_cloud_init_guestinfo:
     runs-on: self-hosted
-    name: ubuntu_2004_cloud_init_guestinfo
+    name: Build ubuntu_2004_cloud_init_guestinfo
 
     steps:
       - name: Checkout Repository
