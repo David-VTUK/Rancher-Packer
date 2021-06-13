@@ -320,3 +320,41 @@ jobs:
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: ubuntu-2004.json
+
+  Build_ubuntu_2004_cloud_init_guestinfo:
+    runs-on: self-hosted
+    name: ubuntu_2004_cloud_init_guestinfo
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
+          command: fix
+          target: ubuntu-2004.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004_cloud_init_guestinfo/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-2004.json
+
+      # Build Template
+      - name: Build Template - Ubuntu 20.04 - no DHCP
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_cloud_init_guestinfo/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-2004.json
