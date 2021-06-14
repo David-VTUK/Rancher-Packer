@@ -35,6 +35,8 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 
 [openSUSE Leap 15.2](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/opensuse_leap_15.2)
 
+[openSUSE Leap 15.3](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/opensuse_leap_15.3)
+
 [SLES 15 SP2](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/sles_15_sp2)
 
 
