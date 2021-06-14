@@ -1,6 +1,6 @@
 name: Build Packer Templates
 
-on: [pull_request, workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
   Build_centos_7:
