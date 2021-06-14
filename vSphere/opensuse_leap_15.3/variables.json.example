@@ -1,0 +1,13 @@
+{
+    "vcenter_server":"",
+    "username":"",
+    "password":"",
+    "datastore":"",
+    "folder": "",
+    "host":"",
+    "cluster": "",
+    "network": "",
+    "ssh_username": "packerbuilt",
+    "ssh_password": "PackerBuilt!",
+    "template_name": "template_opensuse_rancher"
+}
