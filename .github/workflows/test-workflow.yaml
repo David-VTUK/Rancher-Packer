@@ -57,10 +57,10 @@ jobs:
       #    target: centos7.json
 
       # cleanup
-      - name: Delete Configmap & Remove Cloud-Init Data
+      #- name: Delete Configmap & Remove Cloud-Init Data
 
-        uses: steebchen/kubectl@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: delete cm ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
+      #  uses: steebchen/kubectl@master
+      #  env:
+      #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      #  with:
+      #    args: delete cm ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
