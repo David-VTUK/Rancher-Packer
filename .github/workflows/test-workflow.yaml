@@ -32,6 +32,13 @@ jobs:
           arguments: -syntax-only
           target: centos7.json
 
+      # Replace References
+      - name: Replace References
+        run : |
+          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/${{ env.GITHUB_JOB }}.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
+          sed -i 's/cloudinit-service/${{ env.GITHUB_JOB }}.cloudinit-service/g' ./.github/cloud-init.yaml
+          sed -i 's/dir/${{ env.GITHUB_JOB }}-dir/g' ./.github/cloud-init.yaml
+
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
         uses: steebchen/kubectl@master
@@ -40,22 +47,14 @@ jobs:
         with:
           args: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
 
-      # Replace References
-      - name: Replace References
-        run : |
-          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/${{ env.GITHUB_JOB }}.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
-          sed -i 's/cloudinit-service/${{ env.GITHUB_JOB }}.cloudinit-service/g' ./.github/cloud-init.yaml
-          sed -i 's/dir/${{ env.GITHUB_JOB }}-dir/g' ./.github/cloud-init.yaml
-
-
       # Build Template
-      - name: Build Template - Centos 7
-        uses: hashicorp/packer-github-actions@master
-        with:
-          working_directory: ./vSphere/centos_7/
-          command: build
-          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
-          target: centos7.json
+      #- name: Build Template - Centos 7
+      #  uses: hashicorp/packer-github-actions@master
+      #  with:
+      #    working_directory: ./vSphere/centos_7/
+      #    command: build
+      #    arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+      #    target: centos7.json
 
       # cleanup
       - name: Delete Configmap & Remove Cloud-Init Data
