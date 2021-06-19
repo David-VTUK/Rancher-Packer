@@ -6,6 +6,8 @@ jobs:
   Build_centos_7:
     runs-on: self-hosted
     name: Build centos_7
+    env:
+      GITHUB_JOB: ${{ github.job }}
 
     steps:
       - name: Checkout Repository
@@ -18,6 +20,10 @@ jobs:
           working_directory: ./vSphere/centos_7/
           command: fix
           target: centos7.json
+
+      # Grab config file
+      - name: test
+        run : echo $GITHUB_JOB
 
       # Grab config file
       - name: Generate variables.json
@@ -36,7 +42,7 @@ jobs:
       - name: Replace References
         run : |
           sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/${{ env.GITHUB_JOB }}.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
-          sed -i 's/cloudinit-service/${{ env.GITHUB_JOB }}.cloudinit-service/g' ./.github/cloud-init.yaml
+          sed -i 's/cloudinit-service/$GITHUB_RUN_ID.cloudinit-service/g' ./.github/cloud-init.yaml
           sed -i 's/dir/${{ env.GITHUB_JOB }}-dir/g' ./.github/cloud-init.yaml
 
       # Upload Configmap
