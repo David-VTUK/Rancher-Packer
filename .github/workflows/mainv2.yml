@@ -103,13 +103,6 @@ jobs:
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: opensuse-leap-15.2-x86_64.json
 
-      # cleanup
-      - name: Delete Configmap & Remove Cloud-Init Data
-        uses: steebchen/kubectl@v2.0.0
-        with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
-
   build-opensuse-leap-15-3:
     runs-on: self-hosted
     name: Build Opensuse Leap 15.3
@@ -147,13 +140,6 @@ jobs:
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: opensuse-leap-15.3-x86_64.json
-
-      # cleanup
-      - name: Delete Configmap & Remove Cloud-Init Data
-        uses: steebchen/kubectl@v2.0.0
-        with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
 
 # ------------------------------------------------------------------------------------------------------------------
 
