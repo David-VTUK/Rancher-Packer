@@ -2,8 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   labels:
-    app: cloudinit-service
-  name: cloudinit-service
+    app: cloudinit-host
+  name: cloudinit-host
   namespace: default
 spec:
   rules:
@@ -25,10 +25,10 @@ status:
 kind: Service
 apiVersion: v1
 metadata:
-  name: cloudinit-service
+  name: cloudinit-host
 spec:
   selector:
-    app: cloudinit-service
+    app: cloudinit-host
   ports:
     - protocol: TCP
       port: 80
@@ -37,21 +37,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudinit-service
+  name: cloudinit-host
   labels:
     app: nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudinit-service
+      app: cloudinit-host
   template:
     metadata:
       labels:
-        app: cloudinit-service
+        app: cloudinit-host
     spec:
       containers:
-        - name: cloudinit-service
+        - name: cloudinit-host
           image: nginx:1.20.1
           ports:
             - containerPort: 80

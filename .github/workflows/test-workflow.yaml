@@ -44,7 +44,7 @@ jobs:
       - name: Replace References
         run : |
           sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
-          sed -i 's/cloudinit-service/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
+          sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
           sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
 
 
