@@ -17,8 +17,8 @@
       "host": "{{user `host`}}",
       "http_directory": "./http",
       "insecure_connection": "true",
-      "iso_checksum": "SHA256:101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
-      "iso_urls": "http://mirror.bytemark.co.uk/centos/7.8.2003/isos/x86_64/CentOS-7-x86_64-NetInstall-2003.iso",
+      "iso_checksum": "SHA256:07b94e6b1a0b0260b94c83d6bb76b26bf7a310dc78d7a9c7432809fb9bc6194a",
+      "iso_urls": "http://mirror.bytemark.co.uk/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso",
       "network_adapters": [
         {
           "network": "{{user `network`}}",
