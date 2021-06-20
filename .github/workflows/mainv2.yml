@@ -98,7 +98,7 @@ jobs:
       - name: Build Template - Centos 7
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/centos_7/
+          working_directory: ./vSphere/opensuse_leap_15.2/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: opensuse-leap-15.2-x86_64.json
