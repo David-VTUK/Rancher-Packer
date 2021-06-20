@@ -60,7 +60,7 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: create configmap dir --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
+          args: get po -A
 
       # Build Template
       #- name: Build Template - Centos 7
