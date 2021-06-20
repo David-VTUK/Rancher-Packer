@@ -2,6 +2,9 @@ name: Test Workflow
 
 on: [workflow_dispatch]
 
+env:
+  GITHUB_JOB: ${{ github.job }}
+
 jobs:
   build-centos-7:
     runs-on: self-hosted
