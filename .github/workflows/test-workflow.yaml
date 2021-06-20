@@ -56,11 +56,10 @@ jobs:
 
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
-        uses: steebchen/kubectl@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: get po -A
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: get po -A
 
       # Build Template
       #- name: Build Template - Centos 7
