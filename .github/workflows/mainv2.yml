@@ -67,7 +67,7 @@ jobs:
 
   build-opensuse-leap-15-2:
     runs-on: self-hosted
-    name: Build centos_7
+    name: Build Opensuse Leap 15.2
 
     steps:
       - name: Checkout Repository
@@ -79,7 +79,7 @@ jobs:
         with:
           working_directory: ./vSphere/opensuse_leap_15.2/
           command: fix
-          target: centos7.json
+          target: opensuse-leap-15.2-x86_64.json
 
       # Grab config file
       - name: Generate variables.json
@@ -92,7 +92,7 @@ jobs:
           working_directory: ./vSphere/opensuse_leap_15.2/
           command: validate
           arguments: -syntax-only
-          target: centos7.json
+          target: opensuse-leap-15.2-x86_64.json
 
       # Build Template
       - name: Build Template - Centos 7
@@ -112,7 +112,7 @@ jobs:
 
   build-opensuse-leap-15-3:
     runs-on: self-hosted
-    name: Build centos_7
+    name: Build Opensuse Leap 15.3
 
     steps:
       - name: Checkout Repository
@@ -159,7 +159,7 @@ jobs:
 
   build-sles-15-sp2:
     runs-on: self-hosted
-    name: Build sles_15_SP2
+    name: Build SLES 15 SP2
 
     steps:
       - name: Checkout Repository
