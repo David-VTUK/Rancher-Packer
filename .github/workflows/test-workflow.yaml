@@ -67,7 +67,7 @@ jobs:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
 
-  Build-ubuntu-2004-subiquity:
+  build-ubuntu-2004-subiquity:
     runs-on: self-hosted
     name: Build ubuntu_2004_subiquity
     env:
@@ -101,7 +101,7 @@ jobs:
       # Replace References
       - name: Replace References
         run : |
-          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
+          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004_subiquity/ubuntu-2004json
           sed -i 's/cloudinit-service.virtualthoughts.co.uk/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./.github/cloud-init.yaml
           sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
           sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
