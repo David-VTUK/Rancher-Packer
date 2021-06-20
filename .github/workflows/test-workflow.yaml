@@ -56,12 +56,11 @@ jobs:
 
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
-        uses: steebchen/kubectl@v2.0.0
+        uses: steebchen/kubectl@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: create configmap test --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
-          version: v1.21.0
+          args: create configmap dir --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
 
       # Build Template
       #- name: Build Template - Centos 7
