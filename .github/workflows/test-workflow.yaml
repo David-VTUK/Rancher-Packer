@@ -3,7 +3,7 @@ name: Test Workflow
 on: [workflow_dispatch]
 
 jobs:
-  Build-centos-7:
+  build-centos-7:
     runs-on: self-hosted
     name: Build centos_7
     env:
@@ -44,13 +44,15 @@ jobs:
       - name: Replace References
         run : |
           sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
-          sed -i 's/cloudinit-service/$GITHUB_RUN_ID.cloudinit-service/g' ./.github/cloud-init.yaml
-          sed -i 's/dir/$GITHUB_JOB-dir/g' ./.github/cloud-init.yaml
+          sed -i 's/cloudinit-service/'"$GITHUB_JOB"'.cloudinit-service/g' ./.github/cloud-init.yaml
+          sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
 
 
       # Grab config file
       - name: test
-        run: cat ./vSphere/centos_7/centos7.json
+        run: |
+          cat ./vSphere/centos_7/centos7.json
+          cat ./.github/cloud-init.yaml
 
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
