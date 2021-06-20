@@ -3,7 +3,7 @@ name: Test Workflow
 on: [workflow_dispatch]
 
 jobs:
-  Build-centos_7:
+  Build-centos-7:
     runs-on: self-hosted
     name: Build centos_7
     env:
@@ -23,7 +23,9 @@ jobs:
 
       # Grab config file
       - name: test
-        run : echo $GITHUB_JOB
+        run : |
+          echo $GITHUB_JOB
+          env
 
       # Grab config file
       - name: Generate variables.json
@@ -44,8 +46,6 @@ jobs:
           sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
           sed -i 's/cloudinit-service/$GITHUB_RUN_ID.cloudinit-service/g' ./.github/cloud-init.yaml
           sed -i 's/dir/$GITHUB_JOB-dir/g' ./.github/cloud-init.yaml
-        env:
-          GITHUB_JOB: "Test"
 
 
       # Grab config file
