@@ -106,14 +106,12 @@ jobs:
           sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
           sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
 
-
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
-        uses: steebchen/kubectl@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/ubuntu_2004_subiquity/http && kubectl apply -f .github/cloud-init.yaml
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/ubuntu_2004_subiquity/http && kubectl apply -f .github/cloud-init.yaml
 
       # Build Template
       - name: Build Template
