@@ -22,12 +22,6 @@ jobs:
           target: centos7.json
 
       # Grab config file
-      - name: test
-        run : |
-          echo $GITHUB_JOB
-          env
-
-      # Grab config file
       - name: Generate variables.json
         run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/centos_7/variables.json
 
@@ -48,13 +42,6 @@ jobs:
           sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
           sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
 
-
-      # Grab config file
-      - name: test
-        run: |
-          cat ./vSphere/centos_7/centos7.json
-          cat ./.github/cloud-init.yaml
-
       # Upload Configmap
       - name: Upload Configmap & Publish Cloud-Init Data
         uses: steebchen/kubectl@v2.0.0
@@ -63,19 +50,85 @@ jobs:
           command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
 
       # Build Template
-      #- name: Build Template - Centos 7
-      #  uses: hashicorp/packer-github-actions@master
-      #  with:
-      #    working_directory: ./vSphere/centos_7/
-      #    command: build
-      #    arguments: "-color=false -on-error=abort --var-file=variables.json -force"
-      #    target: centos7.json
+      - name: Build Template - Centos 7
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/centos_7/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: centos7.json
 
       # cleanup
-      #- name: Delete Configmap & Remove Cloud-Init Data
+      - name: Delete Configmap & Remove Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
 
-      #  uses: steebchen/kubectl@master
-      #  env:
-      #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      #  with:
-      #    args: delete cm ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
+  Build-ubuntu-2004-subiquity:
+    runs-on: self-hosted
+    name: Build ubuntu_2004_subiquity
+    env:
+      GITHUB_JOB: ${{ github.job }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          command: fix
+          target: ubuntu-2004.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004_subiquity/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-2004.json
+
+      # Replace References
+      - name: Replace References
+        run : |
+          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
+          sed -i 's/cloudinit-service.virtualthoughts.co.uk/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./.github/cloud-init.yaml
+          sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
+          sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
+
+
+      # Upload Configmap
+      - name: Upload Configmap & Publish Cloud-Init Data
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/ubuntu_2004_subiquity/http && kubectl apply -f .github/cloud-init.yaml
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-2004.json
+
+      # cleanup
+      - name: Delete Configmap & Remove Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
