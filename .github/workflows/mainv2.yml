@@ -2,6 +2,9 @@ name: Test build v2
 
 on: [workflow_dispatch]
 
+env:
+  GITHUB_JOB: ${{ github.job }}
+
 jobs:
   build-centos-7:
     runs-on: self-hosted
@@ -59,8 +62,6 @@ jobs:
       # cleanup
       - name: Delete Configmap & Remove Cloud-Init Data
         uses: steebchen/kubectl@v2.0.0
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
@@ -230,9 +231,9 @@ jobs:
 
 # ---------------------------------------------------------------------------------------------------------------
 
-  build-ubuntu-2004-subiquity:
+  build-ubuntu-2004:
     runs-on: self-hosted
-    name: Build ubuntu_2004_subiquity
+    name: Build ubuntu_2004
     env:
       GITHUB_JOB: ${{ github.job }}
 
@@ -244,19 +245,19 @@ jobs:
       - name: Fix Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          working_directory: ./vSphere/ubuntu_2004/
           command: fix
           target: ubuntu-2004.json
 
       # Grab config file
       - name: Generate variables.json
-        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004_subiquity/variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004/variables.json
 
       # validate templates
       - name: Validate Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          working_directory: ./vSphere/ubuntu_2004/
           command: validate
           arguments: -syntax-only
           target: ubuntu-2004.json
@@ -274,13 +275,13 @@ jobs:
         uses: steebchen/kubectl@v2.0.0
         with: # defaults to latest kubectl binary version
           config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/ubuntu_2004_subiquity/http && kubectl apply -f .github/cloud-init.yaml
+          command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/ubuntu_2004/http && kubectl apply -f .github/cloud-init.yaml
 
       # Build Template
       - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          working_directory: ./vSphere/ubuntu_2004/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: ubuntu-2004.json
@@ -288,8 +289,6 @@ jobs:
       # cleanup
       - name: Delete Configmap & Remove Cloud-Init Data
         uses: steebchen/kubectl@v2.0.0
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
