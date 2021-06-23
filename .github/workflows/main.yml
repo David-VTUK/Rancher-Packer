@@ -353,7 +353,7 @@ jobs:
 
   Build_ubuntu_2004_subiquity:
     runs-on: self-hosted
-    name: Build ubuntu_2004_subiquity
+    name: Build ubuntu_2004
     if: always()
     needs: Build_ubuntu_2004_no_dhcp
 
@@ -365,20 +365,20 @@ jobs:
       - name: Fix Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          working_directory: ./vSphere/ubuntu_2004/
           command: fix
           target: ubuntu-2004.json
 
 
       # Grab config file
       - name: Generate variables.json
-        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004_subiquity/variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004/variables.json
 
       # validate templates
       - name: Validate Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          working_directory: ./vSphere/ubuntu_2004/
           command: validate
           arguments: -syntax-only
           target: ubuntu-2004.json
@@ -389,17 +389,17 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: create configmap dir --from-file=./vSphere/ubuntu_2004_subiquity/http && kubectl apply -f .github/cloud-init.yaml
+          args: create configmap dir --from-file=./vSphere/ubuntu_2004/http && kubectl apply -f .github/cloud-init.yaml
 
       # Replace HTTP reference
       - name: Replace HTTP reference
-        run : sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004_subiquity/ubuntu-2004.json
+        run : sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004/ubuntu-2004.json
 
       # Build Template
       - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
-          working_directory: ./vSphere/ubuntu_2004_subiquity/
+          working_directory: ./vSphere/ubuntu_2004/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: ubuntu-2004.json

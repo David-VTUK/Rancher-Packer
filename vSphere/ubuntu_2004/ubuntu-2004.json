@@ -1,62 +1,56 @@
 {
   "builders": [
     {
-      "CPUs": 2,
+      "name": "ubuntu-2004",
+      "type": "vsphere-iso",
+      "guest_os_type": "ubuntu64Guest",
       "RAM": 2048,
-      "RAM_reserve_all": true,
-      "boot_command": [
-        "<enter><wait><f6><wait><esc><wait>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs>",
-        "/install/vmlinuz",
-        " initrd=/install/initrd.gz",
-        " priority=critical",
-        " locale=en_US",
-        " file=/media/preseed.cfg",
-        "<enter>"
-      ],
+      "CPUs": 4,
       "boot_order": "disk,cdrom",
       "cluster": "{{user `cluster`}}",
       "convert_to_template": "true",
       "datastore": "{{user `datastore`}}",
       "disk_controller_type": "pvscsi",
-      "floppy_files": [
-        "./preseed.cfg"
-      ],
-      "folder": "{{user `folder`}}",
-      "guest_os_type": "ubuntu64Guest",
       "host": "{{user `host`}}",
-      "insecure_connection": "true",
-      "iso_checksum": "f11bda2f2caed8f420802b59f382c25160b114ccc665dbac9c5046e7fceaced2",
-      "iso_urls": "http://cdimage.ubuntu.com/ubuntu-legacy-server/releases/20.04/release/ubuntu-20.04.1-legacy-server-amd64.iso",
+      "folder": "{{user `folder`}}",
+      "iso_url": "https://releases.ubuntu.com/20.04/ubuntu-20.04.2-live-server-amd64.iso",
+      "iso_checksum": "d1f2bf834bbe9bb43faf16f9be992a6f3935e65be0edece1dee2aa6eb1767423",
+
       "network_adapters": [
         {
           "network": "{{user `network`}}",
           "network_card": "vmxnet3"
         }
       ],
-      "password": "{{user `password`}}",
-      "ssh_password": "{{user `ssh_password`}}",
-      "ssh_username": "{{user `ssh_username`}}",
+
       "storage": [
         {
-          "disk_size": 8192,
+          "disk_size": 32768,
           "disk_thin_provisioned": true
         }
       ],
-      "type": "vsphere-iso",
+
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_handshake_attempts": "50",
+      "ssh_timeout": "1h",
+      "http_directory": "http",
+
+      "boot_wait": "5s",
+      "boot_command": [
+        "<enter><enter><f6><esc><wait> ",
+        "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+        "<enter>"
+      ],
+
+      "insecure_connection": "true",
       "username": "{{user `username`}}",
+      "password": "{{user `password`}}",
       "vcenter_server": "{{user `vcenter_server`}}",
-      "vm_name": "template_ubuntu2004"
+      "vm_name": "Ubuntu_2004_Subiquity"
     }
   ],
+
   "provisioners": [
     {
       "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
@@ -67,4 +61,3 @@
     }
   ]
 }
-

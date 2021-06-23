@@ -15,31 +15,19 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 
 ### vSphere
 
-[Ubuntu 18.04](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_1804) - Includes logic to address cloud-init dependency and resolves DHCP issues (cloned VM's receiving the same DHCP address.)
-
-[Ubuntu 18.04 - No DHCP](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_1804_no_dhcp) - Forces not to accept DHCP. 
-
-[Ubuntu 20.04](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004)
-
-[Ubuntu 20.04 - Using the new Subiquity Installer](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004_subiquity)
-
-[Ubuntu 20.04 - With cloud-init & OVF integration](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004_cloud_init_guestinfo)
-
-[Ubuntu 20.04 - No DHCP](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/ubuntu_2004_no_dhcp)
-
-[CentOS 7](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/centos_7)
-
-[RHEL7](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/rhel_7)
-
-[RHEL8](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/rhel_8)
-
-[openSUSE Leap 15.2](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/opensuse_leap_15.2)
-
-[openSUSE Leap 15.3](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/opensuse_leap_15.3)
-
-[SLES 15 SP2](https://github.com/David-VTUK/Rancher-Packer/tree/master/vSphere/sles_15_sp2)
-
-
+| OS            | Version       | Base Install Script                             | Additional Install Script Variants |
+| -----------   | ----------- | ------------------------------------------------| -------------------------------------|
+| Centos        | 7           | [Link](/vSphere/centos_7/script.sh)             | None                                                                                                   |
+| OpenSuse Leap | 15.2        | [Link](/vSphere/opensuse_leap_15.2/install.sh)  | None                                                                                                   |
+| OpenSuse Leap | 15.3        | [Link](/vSphere/opensuse_leap_15.3/install.sh)  | None                                                                                                   |
+| RHEL          | 7           | [Link](/vSphere/rhel_7/script.sh)               | None                                                                                                   |
+| RHEL          | 8           | [Link](/vSphere/rhel_8/script.sh)               | None                                                                                                   |
+| SLES          | 15 SP 2     | [Link](/vSphere/sles_15_sp2/install.sh)         | None                                                                                                   |
+| Ubuntu        | 18.04       | [Link](/vSphere/ubuntu_1804/script.sh)          | [Disable DHCP](/vSphere/ubuntu_1804/customisation_scripts/script-no-dhcp.sh)                           |
+| Ubuntu        | 20.04       | [Link](/vSphere/ubuntu_2004/script.sh))         | [Disable DHCP](/vSphere/ubuntu_2004/customisation_scripts/script-no-dhcp.sh)                           |
+|               |             |                                                 | [Disable DHCP](/vSphere/ubuntu_2004/customisation_scripts/script-no-dhcp.sh)                           |
+|               |             |                                                 | [Disable DHCP](/vSphere/ubuntu_2004/customisation_scripts/script-no-dhcp.sh)                           |
+|               |             |                                                 | [Disable DHCP](/vSphere/ubuntu_2004/customisation_scripts/script-no-dhcp.sh)                           |
 ## To do
 
 * CentOS 8
