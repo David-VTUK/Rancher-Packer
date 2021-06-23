@@ -1,4 +1,4 @@
-name: Test DinD
+name: Test kubectl
 
 on: [workflow_dispatch]
 
