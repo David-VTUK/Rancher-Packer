@@ -1,4 +1,4 @@
-name: Test build v2
+name: Test DinD
 
 on: [workflow_dispatch]
 
