@@ -2,6 +2,9 @@ name: Test build v2
 
 on: [workflow_dispatch]
 
+env:
+  GITHUB_JOB: ${{ github.job }}
+
 jobs:
   build-centos-7:
     runs-on: self-hosted
@@ -59,8 +62,6 @@ jobs:
       # cleanup
       - name: Delete Configmap & Remove Cloud-Init Data
         uses: steebchen/kubectl@v2.0.0
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
@@ -288,8 +289,6 @@ jobs:
       # cleanup
       - name: Delete Configmap & Remove Cloud-Init Data
         uses: steebchen/kubectl@v2.0.0
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
