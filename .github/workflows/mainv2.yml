@@ -230,7 +230,7 @@ jobs:
 
 # ---------------------------------------------------------------------------------------------------------------
 
-  build-ubuntu-2004-subiquity:
+  build-ubuntu-2004:
     runs-on: self-hosted
     name: Build ubuntu_2004
     env:
