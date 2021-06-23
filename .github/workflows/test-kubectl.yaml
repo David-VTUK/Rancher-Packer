@@ -1,0 +1,16 @@
+name: Test DinD
+
+on: [workflow_dispatch]
+
+jobs:
+  build-ubuntu-2004:
+    runs-on: self-hosted
+    name: Build ubuntu_2004
+    steps:
+
+      # Test
+      - name: Delete Configmap & Remove Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: get po -A
