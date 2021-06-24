@@ -54,7 +54,7 @@
       "type": "vsphere-iso",
       "username": "{{user `username`}}",
       "vcenter_server": "{{user `vcenter_server`}}",
-      "vm_name": "template_ubuntu1_804"
+      "vm_name": "template_ubuntu_1804"
     }
   ],
   "provisioners": [
