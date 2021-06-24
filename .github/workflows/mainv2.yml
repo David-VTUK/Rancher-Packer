@@ -1,4 +1,4 @@
-name: Test build v2
+name: Build Templates v2
 
 on: [workflow_dispatch]
 
@@ -8,7 +8,7 @@ env:
 jobs:
   build-centos-7:
     runs-on: self-hosted
-    name: Build centos_7
+    name: Build Centos 7
 
     steps:
       - name: Checkout Repository
@@ -51,7 +51,7 @@ jobs:
           command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
 
       # Build Template
-      - name: Build Template - Centos 7
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/centos_7/
@@ -65,6 +65,8 @@ jobs:
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
+
+# ---------------------------------------------------------------------------------------------------------------
 
   build-opensuse-leap-15-2:
     runs-on: self-hosted
@@ -96,13 +98,15 @@ jobs:
           target: opensuse-leap-15.2-x86_64.json
 
       # Build Template
-      - name: Build Template - Centos 7
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/opensuse_leap_15.2/
           command: build
           arguments: "-color=false -on-error=abort --var-file=variables.json -force"
           target: opensuse-leap-15.2-x86_64.json
+
+# ---------------------------------------------------------------------------------------------------------------
 
   build-opensuse-leap-15-3:
     runs-on: self-hosted
@@ -134,7 +138,7 @@ jobs:
           target: opensuse-leap-15.3-x86_64.json
 
       # Build Template
-      - name: Build Template - Centos 7
+      - name: Build Template
         uses: hashicorp/packer-github-actions@master
         with:
           working_directory: ./vSphere/opensuse_leap_15.3/
@@ -193,7 +197,7 @@ jobs:
 # --------------------------------------------------------------------------------------------------------------------
   build-ubuntu-1804:
     runs-on: self-hosted
-    name: Build ubuntu_1804
+    name: Build Ubuntu 18.04
 
     steps:
       - name: Checkout Repository
@@ -233,7 +237,7 @@ jobs:
 
   build-ubuntu-2004:
     runs-on: self-hosted
-    name: Build ubuntu_2004
+    name: Build Ubuntu 20.04
     env:
       GITHUB_JOB: ${{ github.job }}
 
@@ -265,7 +269,7 @@ jobs:
       # Replace References
       - name: Replace References
         run : |
-          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004_subiquity/ubuntu-2004.json
+          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004/ubuntu-2004.json
           sed -i 's/cloudinit-service.virtualthoughts.co.uk/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./.github/cloud-init.yaml
           sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
           sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
