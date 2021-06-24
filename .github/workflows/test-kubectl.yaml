@@ -1,4 +1,4 @@
-name: Test build v2
+name: Test kubectl
 
 on: [workflow_dispatch]
 
