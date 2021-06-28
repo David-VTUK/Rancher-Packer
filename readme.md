@@ -1,4 +1,4 @@
-[![Build](https://github.com/David-VTUK/Rancher-Packer/actions/workflows/main.yml/badge.svg)](https://github.com/David-VTUK/Rancher-Packer/actions/workflows/main.yml)
+[![Build Templates v2](https://github.com/David-VTUK/Rancher-Packer/actions/workflows/mainv2.yml/badge.svg)](https://github.com/David-VTUK/Rancher-Packer/actions/workflows/mainv2.yml)
 
 # Packer Templates for Rancher
 

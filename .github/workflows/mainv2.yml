@@ -1,4 +1,4 @@
-name: Build Templates v2
+name: Build Packer Templates
 
 on: [workflow_dispatch]
 
