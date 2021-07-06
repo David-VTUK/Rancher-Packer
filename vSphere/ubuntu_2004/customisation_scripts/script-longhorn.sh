@@ -30,5 +30,3 @@ bash -c "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-
 
 echo "Removing existing Netplan config file"
 rm /etc/netplan/*.yaml
-
-df -h
