@@ -24,7 +24,8 @@ bash -c "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-
 # Reset any existing cloud-init state
 #
 echo "Resetting Cloud-Init"
+rm /etc/cloud/cloud.cfg.d/*.cfg
 cloud-init clean -s -l
 
 echo "Removing existing Netplan config file"
-rm /etc/netplan/01-netcfg.yaml
+rm /etc/netplan/*.yaml
