@@ -16,6 +16,8 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id
 
 # Reset any existing cloud-init state
 #
+echo "Resetting Cloud-Init"
+rm /etc/cloud/cloud.cfg.d/*.cfg
 cloud-init clean -s -l
 
 # Add cloud-init-vmware-guestinfo
