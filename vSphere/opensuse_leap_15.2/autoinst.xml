@@ -170,6 +170,8 @@ packerbuilt ALL=(ALL,ALL) NOPASSWD: ALL" > /etc/sudoers.d/packerbuilt
         <service>sshd</service>
         <service>docker</service>
         <service>cloud-init</service>
+        <service>cloud-config</service>
+        <service>cloud-final</service>
       </enable>
     </services>
   </services-manager>
