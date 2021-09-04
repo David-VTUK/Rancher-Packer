@@ -30,3 +30,12 @@ bash -c "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-
 
 echo "Removing existing Netplan config file"
 rm /etc/netplan/*.yaml
+
+
+# Prevent cloud-init from setting IP -- Uncomment below lines if you want static ip setup via vApp Pool
+#
+# echo "Disabling cloud-init networking"
+# bash -c "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
+
+# echo "Removing existing Netplan config file"
+# rm /etc/netplan/*.yaml

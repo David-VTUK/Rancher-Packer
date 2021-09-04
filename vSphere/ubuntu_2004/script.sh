@@ -3,7 +3,7 @@
 apt-get update ; apt-get -y dist-upgrade
 apt-get -y autoremove
 apt-get -y clean
-apt-get install docker.io open-iscsi -y
+apt-get install docker.io -y
 
 # Disable swap - generally recommended for K8s, but otherwise enable it for other workloads
 echo "Disabling Swap"
