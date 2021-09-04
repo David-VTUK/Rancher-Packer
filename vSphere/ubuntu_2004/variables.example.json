@@ -1,0 +1,10 @@
+{
+	"vcenter_server":"172.16.1.84",
+	"datastore":"datastore",
+    "ssh_username": "packerbuilt",
+    "ssh_password": "PackerBuilt!",
+	"username":"administrator@homelab.local",
+	"password":"XXX@",
+	"cluster":"Primary",
+	"network":"VM Network"
+}

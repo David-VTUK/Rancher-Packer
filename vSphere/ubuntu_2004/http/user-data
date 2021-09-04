@@ -10,7 +10,7 @@ autoinstall:
   identity:
       hostname: ubuntu
       username: packerbuilt
-      password: '$1$rKxy/hZT$vAZ801S0/UEAEmVKogUdU0' # Password in hashed format
+      password: '$6$EMw9W/qpi/Rz0mD/$tVrkbNHu5lEhwSgGiZkF.5dqRSbuBJsfyuN4JVts0G0aL/K1.uhvusN5SmpgTJl6.7ksVMBQRa/4I6ArNCwgY.' # Password in hashed format for "PackerBuilt!"
   ssh:
       install-server: yes
       allow-pw: yes

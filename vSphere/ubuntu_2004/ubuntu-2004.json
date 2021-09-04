@@ -4,7 +4,7 @@
       "name": "ubuntu-2004",
       "type": "vsphere-iso",
       "guest_os_type": "ubuntu64Guest",
-      "RAM": 2048,
+      "RAM": 4096,
       "CPUs": 4,
       "boot_order": "disk,cdrom",
       "cluster": "{{user `cluster`}}",
@@ -13,8 +13,9 @@
       "disk_controller_type": "pvscsi",
       "host": "{{user `host`}}",
       "folder": "{{user `folder`}}",
-      "iso_url": "https://releases.ubuntu.com/20.04/ubuntu-20.04.2-live-server-amd64.iso",
-      "iso_checksum": "d1f2bf834bbe9bb43faf16f9be992a6f3935e65be0edece1dee2aa6eb1767423",
+      "iso_url": "https://releases.ubuntu.com/20.04/ubuntu-20.04.3-live-server-amd64.iso",
+      "iso_checksum": "f8e3086f3cea0fb3fefb29937ab5ed9d19e767079633960ccb50e76153effc98",
+      
 
       "network_adapters": [
         {
@@ -32,16 +33,20 @@
 
       "ssh_password": "{{user `ssh_password`}}",
       "ssh_username": "{{user `ssh_username`}}",
-      "ssh_handshake_attempts": "50",
-      "ssh_timeout": "1h",
-      "http_directory": "http",
+      "shutdown_command": "echo 'ubnt'|sudo -S shutdown -P now",
 
+      "ssh_handshake_attempts": "100",
+      "ssh_timeout": "20m",
+      "http_directory": "http",
+      
       "boot_wait": "5s",
       "boot_command": [
-        "<enter><enter><f6><esc><wait> ",
-        "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
-        "<enter>"
+        "<enter><wait2><enter><wait><f6><esc><wait>",
+        " autoinstall ds=nocloud-net;",
+        "<wait><enter>"
       ],
+      "cd_files": ["./http/user-data", "./http/meta-data"],
+      "cd_label": "cidata",
 
       "insecure_connection": "true",
       "username": "{{user `username`}}",

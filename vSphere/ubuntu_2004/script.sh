@@ -3,7 +3,7 @@
 apt-get update ; apt-get -y dist-upgrade
 apt-get -y autoremove
 apt-get -y clean
-apt-get install docker.io -y
+apt-get install docker.io open-iscsi -y
 
 # Disable swap - generally recommended for K8s, but otherwise enable it for other workloads
 echo "Disabling Swap"
@@ -22,3 +22,11 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id
 echo "Reset Cloud-Init"
 rm /etc/cloud/cloud.cfg.d/*.cfg
 cloud-init clean -s -l
+
+# Prevent cloud-init from setting IP -- Uncomment below lines if you want static ip setup via vApp Pool
+#
+# echo "Disabling cloud-init networking"
+# bash -c "echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
+
+# echo "Removing existing Netplan config file"
+# rm /etc/netplan/*.yaml
