@@ -21,8 +21,8 @@
         "./autoinst.xml"
       ],
       "guest_os_type": "sles15_64Guest",
-      "iso_checksum": "54fb3a488e0fececf45cdaeefaccfb64437745da4b1ca444662e3aac20cf37b5",
-      "iso_urls": "https://download.opensuse.org/distribution/leap/15.3/iso/openSUSE-Leap-15.3-NET-x86_64.iso",
+      "iso_checksum": "40da6b6fd17f552cd5aa3526d1a5ee091a948c8890ca70d03c9f3f8caa2e0876",
+      "iso_urls": "https://download.opensuse.org/distribution/leap/15.3/iso/openSUSE-Leap-15.3-NET-x86_64-Current.iso",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_port": 22,
