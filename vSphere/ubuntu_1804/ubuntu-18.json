@@ -34,8 +34,8 @@
       "guest_os_type": "ubuntu64Guest",
       "host": "{{user `host`}}",
       "insecure_connection": "true",
-      "iso_checksum": "8c5fc24894394035402f66f3824beb7234b757dd2b5531379cb310cedfdf0996",
-      "iso_urls": "http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.5-server-amd64.iso",
+      "iso_checksum": "f5cbb8104348f0097a8e513b10173a07dbc6684595e331cb06f93f385d0aecf6",
+      "iso_urls": "http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.6-server-amd64.iso",
       "network_adapters": [
         {
           "network": "{{user `network`}}",
