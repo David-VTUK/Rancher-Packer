@@ -1,0 +1,64 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app: cloudinit-host
+  name: cloudinit-host
+  namespace: default
+spec:
+  rules:
+    - host: cloudinit-service.virtualthoughts.co.uk
+      http:
+        paths:
+          - backend:
+              service:
+                name: cloudinit-host
+                port:
+                  number: 80
+            path: /
+            pathType: ImplementationSpecific
+status:
+  loadBalancer:
+    ingress:
+      - ip: 172.16.10.121
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cloudinit-host
+spec:
+  selector:
+    app: cloudinit-host
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudinit-host
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudinit-host
+  template:
+    metadata:
+      labels:
+        app: cloudinit-host
+    spec:
+      containers:
+        - name: cloudinit-host
+          image: nginx:1.20.1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: cloudinit
+              mountPath: /usr/share/nginx/html/
+      volumes:
+        - name: cloudinit
+          configMap:
+            name: dir

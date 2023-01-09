@@ -1,0 +1,49 @@
+#cloud-config
+autoinstall:
+  version: 1
+  early-commands:
+    - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+  locale: en_US
+  storage:
+    config:
+    - grub_device: true
+      id: disk-sda
+      path: /dev/sda
+      ptable: gpt
+      type: disk
+      wipe: superblock-recursive
+    - device: disk-sda
+      flag: bios_grub
+      id: partition-0
+      number: 1
+      size: 1048576
+      type: partition
+    - device: disk-sda
+      id: partition-1
+      number: 2
+      size: -1
+      type: partition
+      wipe: superblock
+    - fstype: ext4
+      id: format-0
+      type: format
+      volume: partition-1
+    - device: format-0
+      id: mount-0
+      path: /
+      type: mount
+  keyboard:
+      layout: en
+      variant: uk
+  identity:
+      hostname: ubuntu
+      username: packerbuilt
+      password: '$1$rKxy/hZT$vAZ801S0/UEAEmVKogUdU0' # Password in hashed format
+  ssh:
+      install-server: yes
+      allow-pw: yes
+  packages:
+    - open-vm-tools
+  late-commands:
+    - echo 'packerbuilt ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/packerbuilt
+    - chmod 440 /target/etc/sudoers.d/packerbuilt

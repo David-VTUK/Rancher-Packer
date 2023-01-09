@@ -1,0 +1,65 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><enter><wait>",
+        "linux ",
+        "biosdevname=0 ",
+        "net.ifnames=0 ",
+        "netdevice=eth0 ",
+        "netsetup=dhcp ",
+        "lang=en_US ",
+        "textmode=1 ",
+        "autoyast=device://fd0/autoinst.xml",
+        "<enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "cpus": 2,
+      "ram": 2048,
+      "ram_reserve_all": true,
+      "floppy_files": [
+        "./autoinst.xml"
+      ],
+      "guest_os_type": "sles15_64Guest",
+      "iso_checksum": "54fb3a488e0fececf45cdaeefaccfb64437745da4b1ca444662e3aac20cf37b5",
+      "iso_urls": "https://download.opensuse.org/distribution/leap/15.3/iso/openSUSE-Leap-15.3-NET-x86_64.iso",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "type": "vsphere-iso",
+      "host": "{{user `host`}}",
+      "username": "{{user `username`}}",
+      "password": "{{user `password`}}",
+      "vcenter_server": "{{user `vcenter_server`}}",
+      "folder": "{{user `folder`}}",
+      "vm_name": "opensuse_leap_15.3",
+      "cluster": "{{user `cluster`}}",
+      "convert_to_template": "true",
+      "datastore": "{{user `datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "insecure_connection": "true",
+      "network_adapters": [
+        {
+          "network": "{{user `network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "storage": [
+        {
+          "disk_size": 8192,
+          "disk_thin_provisioned": true
+        }
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "install.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}

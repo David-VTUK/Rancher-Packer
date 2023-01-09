@@ -1,0 +1,14 @@
+# Cache objects
+packer_cache/
+
+# Crash log
+crash.log
+
+# For built boxes
+*.box
+
+# Config file
+variables.json
+
+# Downloaded iso's
+*.iso

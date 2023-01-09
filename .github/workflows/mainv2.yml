@@ -1,0 +1,298 @@
+name: Build Packer Templates
+
+on: [workflow_dispatch]
+
+env:
+  GITHUB_JOB: ${{ github.job }}
+
+jobs:
+  build-centos-7:
+    runs-on: self-hosted
+    name: Build Centos 7
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/centos_7/
+          command: fix
+          target: centos7.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/centos_7/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/centos_7/
+          command: validate
+          arguments: -syntax-only
+          target: centos7.json
+
+      # Replace References
+      - name: Replace References
+        run : |
+          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/centos_7/centos7.json
+          sed -i 's/cloudinit-service.virtualthoughts.co.uk/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./.github/cloud-init.yaml
+          sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
+          sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
+
+      # Upload Configmap
+      - name: Upload Configmap & Publish Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/centos_7/http && kubectl apply -f .github/cloud-init.yaml
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/centos_7/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: centos7.json
+
+      # cleanup
+      - name: Delete Configmap & Remove Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml
+
+# ---------------------------------------------------------------------------------------------------------------
+
+  build-opensuse-leap-15-2:
+    runs-on: self-hosted
+    name: Build Opensuse Leap 15.2
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/opensuse_leap_15.2/
+          command: fix
+          target: opensuse-leap-15.2-x86_64.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/opensuse_leap_15.2/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/opensuse_leap_15.2/
+          command: validate
+          arguments: -syntax-only
+          target: opensuse-leap-15.2-x86_64.json
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/opensuse_leap_15.2/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: opensuse-leap-15.2-x86_64.json
+
+# ---------------------------------------------------------------------------------------------------------------
+
+  build-opensuse-leap-15-3:
+    runs-on: self-hosted
+    name: Build Opensuse Leap 15.3
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/opensuse_leap_15.3/
+          command: fix
+          target: opensuse-leap-15.3-x86_64.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/opensuse_leap_15.3/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/opensuse_leap_15.3/
+          command: validate
+          arguments: -syntax-only
+          target: opensuse-leap-15.3-x86_64.json
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/opensuse_leap_15.3/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: opensuse-leap-15.3-x86_64.json
+
+# ------------------------------------------------------------------------------------------------------------------
+
+  build-sles-15-sp2:
+    runs-on: self-hosted
+    name: Build SLES 15 SP2
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/sles_15_sp2/
+          command: fix
+          target: sles-15sp2.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/sles_15_sp2/variables.json
+
+      # Replace ISO reference
+      - name: Replace ISO reference
+        run : sed -i 's,"./SLE-15-SP2-Online-x86_64-GM-Media1.iso","https://minio.virtualthoughts.co.uk:9000/iso/SLE-15-SP2-Online-x86_64-GM-Media1.iso",g' ./vSphere/sles_15_sp2/sles-15sp2.json
+
+      # Replace Reg Code reference
+      - name: Replace Reg Code reference
+        run : sed -i "s/YOUR_REG_CODE_HERE/${{ secrets.SCC_CODE }}/g" ./vSphere/sles_15_sp2/autoinst.xml
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/sles_15_sp2/
+          command: validate
+          arguments: -syntax-only
+          target: sles-15sp2.json
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/sles_15_sp2/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: sles-15sp2.json
+
+# --------------------------------------------------------------------------------------------------------------------
+  build-ubuntu-1804:
+    runs-on: self-hosted
+    name: Build Ubuntu 18.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804/
+          command: fix
+          target: ubuntu-18.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_1804/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-18.json
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_1804/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-18.json
+
+# ---------------------------------------------------------------------------------------------------------------
+
+  build-ubuntu-2004:
+    runs-on: self-hosted
+    name: Build Ubuntu 20.04
+    env:
+      GITHUB_JOB: ${{ github.job }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # fix backwards incompatibilities in template
+      - name: Fix Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004/
+          command: fix
+          target: ubuntu-2004.json
+
+      # Grab config file
+      - name: Generate variables.json
+        run : echo ${{ secrets.PACKER_CONFIG_BASE64 }} | base64 -d > ./vSphere/ubuntu_2004/variables.json
+
+      # validate templates
+      - name: Validate Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004/
+          command: validate
+          arguments: -syntax-only
+          target: ubuntu-2004.json
+
+      # Replace References
+      - name: Replace References
+        run : |
+          sed -i 's/{{ .HTTPIP }}:{{ .HTTPPort }}/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./vSphere/ubuntu_2004/ubuntu-2004.json
+          sed -i 's/cloudinit-service.virtualthoughts.co.uk/'"$GITHUB_JOB"'.cloudinit-service.virtualthoughts.co.uk/g' ./.github/cloud-init.yaml
+          sed -i 's/cloudinit-host/'"$GITHUB_JOB"'/g' ./.github/cloud-init.yaml
+          sed -i 's/dir/'"$GITHUB_JOB"'-dir/g' ./.github/cloud-init.yaml
+
+      # Upload Configmap
+      - name: Upload Configmap & Publish Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        with: # defaults to latest kubectl binary version
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: create configmap ${{ env.GITHUB_JOB }}-dir --from-file=./vSphere/ubuntu_2004/http && kubectl apply -f .github/cloud-init.yaml
+
+      # Build Template
+      - name: Build Template
+        uses: hashicorp/packer-github-actions@master
+        with:
+          working_directory: ./vSphere/ubuntu_2004/
+          command: build
+          arguments: "-color=false -on-error=abort --var-file=variables.json -force"
+          target: ubuntu-2004.json
+
+      # cleanup
+      - name: Delete Configmap & Remove Cloud-Init Data
+        uses: steebchen/kubectl@v2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: delete configmap ${{ env.GITHUB_JOB }}-dir && kubectl delete -f .github/cloud-init.yaml

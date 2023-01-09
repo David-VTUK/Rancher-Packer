@@ -1,0 +1,63 @@
+{
+  "builders": [
+    {
+      "name": "ubuntu-2004",
+      "type": "vsphere-iso",
+      "guest_os_type": "ubuntu64Guest",
+      "RAM": 2048,
+      "CPUs": 4,
+      "boot_order": "disk,cdrom",
+      "cluster": "{{user `cluster`}}",
+      "convert_to_template": "true",
+      "datastore": "{{user `datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "host": "{{user `host`}}",
+      "folder": "{{user `folder`}}",
+      "iso_url": "https://releases.ubuntu.com/20.04/ubuntu-20.04.4-live-server-amd64.iso",
+      "iso_checksum": "28ccdb56450e643bad03bb7bcf7507ce3d8d90e8bf09e38f6bd9ac298a98eaad",
+
+      "network_adapters": [
+        {
+          "network": "{{user `network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+
+      "storage": [
+        {
+          "disk_size": 8192,
+          "disk_thin_provisioned": true
+        }
+      ],
+
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_handshake_attempts": "50",
+      "ssh_timeout": "1h",
+      "http_directory": "http",
+
+      "boot_wait": "5s",
+      "boot_command": [
+        "<enter><enter><f6><esc><wait> ",
+        "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+        "<enter>"
+      ],
+
+      "insecure_connection": "true",
+      "username": "{{user `username`}}",
+      "password": "{{user `password`}}",
+      "vcenter_server": "{{user `vcenter_server`}}",
+      "vm_name": "{{user `template_name`}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "script.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}

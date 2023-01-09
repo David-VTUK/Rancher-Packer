@@ -1,0 +1,66 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><enter><wait>",
+        "linux ",
+        "biosdevname=0 ",
+        "net.ifnames=0 ",
+        "netdevice=eth0 ",
+        "netsetup=dhcp ",
+        "lang=en_US ",
+        "textmode=1 ",
+        "self_update=1 ",
+        "autoyast=device://fd0/autoinst.xml",
+        "<enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "cpus": 2,
+      "ram": 2048,
+      "ram_reserve_all": true,
+      "floppy_files": [
+        "./autoinst.xml"
+      ],
+      "guest_os_type": "sles15_64Guest",
+      "iso_checksum": "6ac1d233aaeca29e7237ee462badeb8d2becc11dc508317cb27702a50f855541",
+      "iso_urls": "./SLE-15-SP2-Online-x86_64-GM-Media1.iso",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "type": "vsphere-iso",
+      "host": "{{user `host`}}",
+      "username": "{{user `username`}}",
+      "password": "{{user `password`}}",
+      "vcenter_server": "{{user `vcenter_server`}}",
+      "folder": "{{user `folder`}}",
+      "vm_name": "Sles_15_SP2",
+      "cluster": "{{user `cluster`}}",
+      "convert_to_template": "true",
+      "datastore": "{{user `datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "insecure_connection": "true",
+      "network_adapters": [
+        {
+          "network": "{{user `network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "storage": [
+        {
+          "disk_size": 8192,
+          "disk_thin_provisioned": true
+        }
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo '{{user `ssh_password`}}' | sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "install.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
