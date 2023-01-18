@@ -24,6 +24,8 @@ This repo contains Packer templates suitable to create RKE VM's for a number of 
 | RHEL          | 7       | [Link](/vSphere/rhel_7/script.sh)              | None                                                                                      |
 | RHEL          | 8       | [Link](/vSphere/rhel_8/script.sh)              | None                                                                                      |
 | SLES          | 15 SP 2 | [Link](/vSphere/sles_15_sp2/install.sh)        | None                                                                                      |
+| SLES          | 15 SP 3 | [Link](/vSphere/sles_15_sp3/install.sh)        | None                                                                                      |
+| SLES          | 15 SP 4 | [Link](/vSphere/sles_15_sp4/install.sh)        | None                                                                                      |
 | Ubuntu        | 18.04   | [Link](/vSphere/ubuntu_1804/script.sh)         | [Disable DHCP](/vSphere/ubuntu_1804/customisation_scripts/script-no-dhcp.sh)              |
 | Ubuntu        | 20.04   | [Link](/vSphere/ubuntu_2004/script.sh)         | [Disable DHCP](/vSphere/ubuntu_2004/customisation_scripts/script-no-dhcp.sh)              |
 |               |         |                                                | [Guestinfo OVF](/vSphere/ubuntu_2004/customisation_scripts/script-cloudinit-guestinfo.sh) |

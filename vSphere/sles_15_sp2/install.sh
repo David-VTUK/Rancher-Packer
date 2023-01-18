@@ -13,6 +13,13 @@ truncate -s 0 /etc/machine-id
 rm /var/lib/dbus/machine-id
 ln -s /etc/machine-id /var/lib/dbus/machine-id
 
+# Ensure cloud-init services are enabled
+systemctl enable cloud-init.service
+systemctl enable cloud-init-local.server
+systemctl enable cloud-config.service
+systemctl enable cloud-final.service
+
+
 # Cleanup
 #
 zypper -n clean --all
