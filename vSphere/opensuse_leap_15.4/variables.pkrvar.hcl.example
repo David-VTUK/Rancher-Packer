@@ -1,0 +1,22 @@
+# VSphere Specs
+vcenter_server = "vcsa00.lab.k8"                 # vCenter FQDN
+username       = "administrator@vsphere.local"   # vCenter username 
+password       = "Gr8tP@sSw0rd1!"                # vCenter password
+datastore      = "datastore2"                    # datastore
+folder         = "templates"                     # VM folder
+host           = "esxi00.lab.k8"                 # ESXi host targeted for build
+cluster        = "clus01"                        # ESXi CLuster
+network        = "vm_network"                    # VM Network
+
+#VM Specs
+vm_name        = "opensuse_15_4_golden_image"   # Virtual Machine Name
+ssh_username   = "root"                         # Proviledged User post deployment scripts
+ssh_password   = "toor"                         # Priviledged user password (hashed in autoinst.xml)
+cpus           = 2                              # vCPUs for the VM
+cores          = 2                              # Cores per vCPU
+ram            = 8192                           # RAM to be assigned to VM
+disk0_size     = 56320                          # Disk 0 size
+disk1_size     = 76800                          # Disk 1 size (XFS mounted in /var/lib/rancher)
+iso_url        = "http://reposrv.lab.k8/openSUSE-Leap-15.4-CR-DVD-x86_64-Media.iso"    # ISO image checksum
+iso_checksum   = "f38572d2419a0a64715fd33b4b3f867d69dfcd0cb8727196a5f71621d8c69ccf"    # ISO image URL
+
