@@ -22,3 +22,6 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id
 echo "Reset Cloud-Init"
 rm /etc/cloud/cloud.cfg.d/*.cfg
 cloud-init clean -s -l
+
+# Do not notify the DHCP server to release leases on graceful shutdown
+/usr/bin/sed -i '/\[DHCPv4\]/a SendRelease=false' /etc/systemd/networkd.conf
